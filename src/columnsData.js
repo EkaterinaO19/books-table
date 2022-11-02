@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom";
+import {Space} from "antd";
 
 export const columns = [
     {
@@ -6,6 +7,7 @@ export const columns = [
         dataIndex: 'id',
         key: 'id',
         render: (id) => <Link to={`books/${id}`}>{id}</Link>
+
     },
     {
         title: 'isbn',
@@ -42,19 +44,21 @@ export const columns = [
     {
         title: 'reviews',
         dataIndex: 'reviews',
-        render: (reviews) => <>{reviews.map(review => review.body)}</>,
+        render: (reviews) => <>{reviews.forEach(review => review.body)}</>,
         key: 'reviews',
     },
     {
         title: 'Action',
-        dataIndex: '',
-        key: 'x',
-        render: () => <a>Edit</a>,
+        key: 'id',
+        render: (_, record) => {
+            console.log('COLUMNS');
+            console.log(_, record['@id']);
+            return (
+                <Space size="middle">
+                    <Link to={record["@id"]}>show</Link>
+                    <Link to={record["@id"]+'/edit'}>edit</Link>
+                </Space>
+            );
+        },
     },
-    ]
-
-
-
-
-
-
+]

@@ -1,19 +1,28 @@
-import {Button, Form, Input, Layout} from "antd";
+import {Button, Layout} from "antd";
 import {Content} from "antd/es/layout/layout";
 import 'antd/dist/antd.css';
 import Search from "antd/es/input/Search";
-import TableComponent from "./TableComponent";
+import TableComponent from "./components/TableComponent";
 import {useQuery, useQueryClient} from "react-query";
 import React from "react";
+import {useNavigate} from "react-router-dom";
 
 
 
 function App() {
-    const { isLoading, error, data } = useQuery('booksData', () =>
+    const { isLoading, error, data, isError, isSuccess } = useQuery('booksData', () =>
         fetch('https://demo.api-platform.com/books').then(res =>
             res.json()
-        )
-    );
+        ), {
+        isError: (error) => {
+            alert(error.message)
+        }
+    });
+
+    const navigate = useNavigate();
+    const handelToCreateBook = () => {
+        navigate('books/create')
+    }
 
     if (isLoading) return 'Loading...'
 
@@ -30,7 +39,7 @@ function App() {
                        width: 200,
                     }}
                 />
-                <Button type="primary">Create Book</Button>
+                <Button onClick={handelToCreateBook} type="primary">Create Book</Button>
             </div>
             <Content>
                 {data['hydra:member'] && Array.isArray(data['hydra:member'] )&& <TableComponent

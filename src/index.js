@@ -6,8 +6,11 @@ import {
     createBrowserRouter,
     RouterProvider,
     } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import BookCard from "./BookCard";
+import ErrorPage from "./components/ErrorPage";
+import BookCard from "./components/BookCard";
+import ShowBooks from "./components/ShowBooks";
+import {ReactQueryDevtools} from "react-query/devtools";
+import CreateBook from "./components/CreateBook";
 
 
 const router = createBrowserRouter([
@@ -18,8 +21,18 @@ const router = createBrowserRouter([
     },
     {
         path: "books/:bookId",
-        element: <BookCard />,
+        element: <ShowBooks />,
         errorElement: <ErrorPage />,
+    },
+    {
+        path: "books/:bookId/edit",
+        element: <BookCard/>,
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: "books/create",
+        element: <CreateBook/>,
+        errorElement: <ErrorPage/>
     }
 ]);
 
@@ -30,6 +43,7 @@ root.render(
   <React.StrictMode>
       <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
+          <ReactQueryDevtools/>
       </QueryClientProvider>
   </React.StrictMode>
 );
