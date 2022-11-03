@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from "antd";
-import {columns} from "../columnsData";
+import {columns} from "../../columnsData";
 
 function TableComponent(props) {
     return (

@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './components/book list/App';
 import {QueryClient, QueryClientProvider, useQuery, useQueryClient} from "react-query";
 import {
     createBrowserRouter,
     RouterProvider,
     } from "react-router-dom";
 import ErrorPage from "./components/ErrorPage";
-import BookCard from "./components/BookCard";
-import ShowBooks from "./components/ShowBooks";
+import BookCard from "./components/edit book/BookCard";
+import ShowBook from "./components/show book/ShowBook";
 import {ReactQueryDevtools} from "react-query/devtools";
-import CreateBook from "./components/CreateBook";
+import CreateBook from "./components/create book/CreateBook";
 
 
 const router = createBrowserRouter([
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
     },
     {
         path: "books/:bookId",
-        element: <ShowBooks />,
+        element: <ShowBook />,
         errorElement: <ErrorPage />,
     },
     {

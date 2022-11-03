@@ -3,8 +3,8 @@ import {Link} from "react-router-dom";
 import {LeftOutlined} from "@ant-design/icons";
 import { Form, Field } from 'react-final-form'
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function BookForm(props) {
 

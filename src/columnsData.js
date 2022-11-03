@@ -1,5 +1,21 @@
 import {Link} from "react-router-dom";
 import {Space} from "antd";
+import useDelete from "./components/useDelete";
+
+
+const ActionComponent =  ({record}) =>{
+
+const deleteBook = useDelete("books");
+
+        return (
+            <Space size="middle">
+                <Link to={record["@id"]}>show</Link>
+                <Link to={record["@id"]+'/edit'}>edit</Link>
+                <a onClick={()=>deleteBook.mutate(record)}>delete</a>
+            </Space>
+        );
+
+}
 
 export const columns = [
     {
@@ -7,7 +23,6 @@ export const columns = [
         dataIndex: 'id',
         key: 'id',
         render: (id) => <Link to={`books/${id}`}>{id}</Link>
-
     },
     {
         title: 'isbn',
@@ -50,15 +65,6 @@ export const columns = [
     {
         title: 'Action',
         key: 'id',
-        render: (_, record) => {
-            console.log('COLUMNS');
-            console.log(_, record['@id']);
-            return (
-                <Space size="middle">
-                    <Link to={record["@id"]}>show</Link>
-                    <Link to={record["@id"]+'/edit'}>edit</Link>
-                </Space>
-            );
-        },
+        render: (record) => <ActionComponent  record={record} />,
     },
 ]

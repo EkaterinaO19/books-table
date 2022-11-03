@@ -1,19 +1,16 @@
 import React from 'react';
 import {LeftOutlined} from "@ant-design/icons";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {useMutation, useQuery} from "react-query";
-import {Button, Table} from "antd";
-import { removeBook } from "../api";
+import {useMutation, useQuery, useQueryClient} from "react-query";
+import {Button} from "antd";
 import axios from "axios";
 
 
-function ShowBooks() {
+function ShowBook() {
     let  { bookId }  = useParams();
-
     const navigate = useNavigate();
-    const handelToEditBook = () => {
-        navigate(`/edit`)
-    }
+    const queryClient = useQueryClient();
+
 
     const { isLoading, error, data, redirect } = useQuery(['showBook',bookId], () =>
         fetch(`https://demo.api-platform.com/books/${bookId}`).then(res =>
@@ -21,21 +18,27 @@ function ShowBooks() {
         )
     );
 
-
-    const handleToDelete = value => {
-        mutation.mutate(value);
-    }
-
-    const mutation = useMutation(removeBook => {
-        return axios.delete('https://demo.api-platform.com/books', removeBook)
+    const remove = useMutation(removeBook => {
+        return axios.delete(`https://demo.api-platform.com/books/${bookId}`)
     }, {
         onSuccess: async () => {
-            alert('Book successfully deleted!')
+            await alert('Book successfully deleted!')
+            await queryClient.invalidateQueries('booksData')
             navigate('/');
         },
         onError: async () => {
         }
     });
+
+    const handleToEdit = () => {
+        navigate('edit')
+    }
+
+    const handleToDelete = value => {
+        remove.mutate(value);
+    }
+
+
 
     if (isLoading) return 'Loading...'
 
@@ -75,10 +78,10 @@ function ShowBooks() {
                     <td>{data.reviews.map(review => review.body)}</td>
                 </tr>
             </table>
-            <Button onClick={handelToEditBook} type="primary">Edit</Button>
-            <Button danger onSubmit={handleToDelete}>Delete</Button>
+            <Button onClick={handleToEdit} type="primary">Edit</Button>
+            <Button danger onClick={handleToDelete}>Delete</Button>
         </>
     );
 }
 
-export default ShowBooks;
+export default ShowBook;

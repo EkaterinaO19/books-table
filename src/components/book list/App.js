@@ -2,7 +2,7 @@ import {Button, Layout} from "antd";
 import {Content} from "antd/es/layout/layout";
 import 'antd/dist/antd.css';
 import Search from "antd/es/input/Search";
-import TableComponent from "./components/TableComponent";
+import TableComponent from "./TableComponent";
 import {useQuery, useQueryClient} from "react-query";
 import React from "react";
 import {useNavigate} from "react-router-dom";
