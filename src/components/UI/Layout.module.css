@@ -1,0 +1,8 @@
+.layout {
+    background-image: url("/src/assets/will-van-wingerden-dsvJgiBJTOs-unsplash.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    z-index: 0;
+    display: flex;
+}

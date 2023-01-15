@@ -1,49 +1,64 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/book list/App';
-import {QueryClient, QueryClientProvider, useQuery, useQueryClient} from "react-query";
 import {
-    createBrowserRouter,
-    RouterProvider,
-    } from "react-router-dom";
-import ErrorPage from "./components/ErrorPage";
-import BookCard from "./components/edit book/BookCard";
-import ShowBook from "./components/show book/ShowBook";
-import {ReactQueryDevtools} from "react-query/devtools";
-import CreateBook from "./components/create book/CreateBook";
+    QueryClient,
+    QueryClientProvider,
+    useQuery,
+} from '@tanstack/react-query'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./components/UI/ErrorPage";
+import BookCard from "./pages/edit book/BookCard";
+import ShowBook from "./pages/show book/ShowBook";
+import CreateBook from "./pages/create book/CreateBook";
+import Main from './pages/book list/Main';
+import ProfilePage from "./pages/profile/ProfilePage";
+import { AuthContextProvider} from "./store/auth-context";
+import Auth from "./pages/Auth";
 
 
 const router = createBrowserRouter([
+
     {
-        path: "/",
-        element: <App/>,
+        path: "/auth",
+        element: <Auth/>,
         errorElement: <ErrorPage />,
     },
     {
-        path: "books/:bookId",
+        path: "/profile",
+        element: <ProfilePage/>,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/",
+        element: <Main/>,
+        // errorElement: <ErrorPage />,
+    },
+    {
+        path: "/create",
+        element: <CreateBook/>,
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: "/:bookId",
         element: <ShowBook />,
         errorElement: <ErrorPage />,
     },
     {
-        path: "books/:bookId/edit",
+        path: "/:bookId/edit",
         element: <BookCard/>,
-        errorElement: <ErrorPage/>
-    },
-    {
-        path: "books/create",
-        element: <CreateBook/>,
         errorElement: <ErrorPage/>
     }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 root.render(
   <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <ReactQueryDevtools/>
+      <AuthContextProvider>
+              <RouterProvider router={router} />
+          </AuthContextProvider>
       </QueryClientProvider>
   </React.StrictMode>
 );
