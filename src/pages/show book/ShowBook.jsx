@@ -12,7 +12,7 @@ function ShowBook() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const { isLoading, error, data, redirect } = useQuery(['showBook',bookId], () =>
+    const { isLoading, error, data } = useQuery(['showBook',bookId], () =>
         fetch(`https://demo.api-platform.com/books/${bookId}`).then(res =>
             res.json()
         )
@@ -23,7 +23,7 @@ function ShowBook() {
     }, {
         onSuccess: async () => {
             await alert('Book successfully deleted!')
-            await queryClient.invalidateQueries('booksData')
+            await queryClient.invalidateQueries("booksData")
             navigate('/');
         },
         onError: async () => {
@@ -34,6 +34,7 @@ function ShowBook() {
     if (isLoading) return <LoadingSpinner/>
 
     if (error) return <ErrorPage/>
+
     const handleToEdit = () => {
         navigate('edit')
     }
@@ -45,7 +46,7 @@ function ShowBook() {
     return (
         <>
             <Link to={'/'}><LeftOutlined/>Back</Link>
-                <h1>Show Book: {data.title}</h1>
+                <h1>Show Book: {data?.title}</h1>
             <table style={{width: '70%'}}>
                 <tr style={{backgroundColor: 'lightgray'}}>
                     <th style={{width: '10%'}}>Field</th>
@@ -53,27 +54,27 @@ function ShowBook() {
                 </tr>
                 <tr>
                     <td>isbn</td>
-                    <td>{data.isbn}</td>
+                    <td>{data?.isbn}</td>
                 </tr>
                 <tr>
                     <td>author</td>
-                    <td>{data.author}</td>
+                    <td>{data?.author}</td>
                 </tr>
                 <tr>
                     <td>title</td>
-                    <td>{data.title}</td>
+                    <td>{data?.title}</td>
                 </tr>
                 <tr>
                     <td>description</td>
-                    <td>{data.description}</td>
+                    <td>{data?.description}</td>
                 </tr>
                 <tr>
                     <td>publicationDate</td>
-                    <td>{data.publicationDate}</td>
+                    <td>{data?.publicationDate}</td>
                 </tr>
                 <tr>
                     <td>reviews</td>
-                    <td>{data.reviews.map(review => review.body)}</td>
+                    <td>{data?.reviews.map(review => review.body)}</td>
                 </tr>
             </table>
             <Button onClick={handleToEdit} type="primary">Edit</Button>

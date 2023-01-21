@@ -3,6 +3,7 @@ import {Link, useNavigate,} from "react-router-dom";
 import axios from "axios";
 import {useMutation} from "@tanstack/react-query";
 import CreateBookForm from "./CreateBookForm";
+import {message} from "antd";
 
 
 const CreateBook = () => {
@@ -27,7 +28,7 @@ const CreateBook = () => {
                 <>
                      <CreateBookForm mutation={mutation}/>
                      {mutation.isError && (
-                             <div style={{color: 'red', fontWeight:'bold', textAlign:'center', marginTop: '20px'}}>Ooops, something went wrong...</div>
+                             <div style={{color: 'red', fontWeight:'bold', textAlign:'center', marginTop: '20px'}}>smth went wrong</div>
                          )}
                 </>
             )}

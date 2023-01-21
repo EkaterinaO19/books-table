@@ -2,36 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
     QueryClient,
-    QueryClientProvider,
-    useQuery,
+    QueryClientProvider
 } from '@tanstack/react-query'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/UI/ErrorPage";
-import BookCard from "./pages/edit book/BookCard";
+import Main from './pages/main/Main';
+import EditBook from "./pages/edit book/EditBook";
 import ShowBook from "./pages/show book/ShowBook";
 import CreateBook from "./pages/create book/CreateBook";
-import Main from './pages/book list/Main';
-import ProfilePage from "./pages/profile/ProfilePage";
 import { AuthContextProvider} from "./store/auth-context";
-import Auth from "./pages/Auth";
+import ReviewList from "./pages/review/ReviewList";
+import ShowReview from "./pages/review/ShowReview";
+import CreateReview from "./pages/review/CreateReview";
+import EditReview from "./pages/review/EditReview";
 
 
 const router = createBrowserRouter([
-
-    {
-        path: "/auth",
-        element: <Auth/>,
-        errorElement: <ErrorPage />,
-    },
-    {
-        path: "/profile",
-        element: <ProfilePage/>,
-        errorElement: <ErrorPage />,
-    },
     {
         path: "/",
         element: <Main/>,
-        // errorElement: <ErrorPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/create",
@@ -39,15 +29,35 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage/>
     },
     {
-        path: "/:bookId",
+        path: "books/:bookId",
         element: <ShowBook />,
         errorElement: <ErrorPage />,
     },
     {
-        path: "/:bookId/edit",
-        element: <BookCard/>,
+        path: "books/:bookId/edit",
+        element: <EditBook/>,
         errorElement: <ErrorPage/>
-    }
+    },
+    {
+        path: "/reviews",
+        element: <ReviewList/>,
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: "/reviews/:reviewId",
+        element: <ShowReview/>,
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: "/reviews/create",
+        element: <CreateReview/>,
+        errorElement: <ErrorPage/>
+    },
+    {
+        path: "/reviews/:reviewId/edit",
+        element: <EditReview/>,
+        errorElement: <ErrorPage/>
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
