@@ -1,16 +1,17 @@
 import React from 'react';
 import {useQuery, useMutation} from '@tanstack/react-query'
 import axios from "axios";
-import {Button, DatePicker, Input} from "antd";
+import {Input} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {LeftOutlined} from "@ant-design/icons";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import useDelete from "../../hooks/useDelete";
 import ErrorPage from "../../components/UI/ErrorPage";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
-import {Form, Field} from 'react-final-form';
+import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
+import {composeValidators, isbnNumbersCheck, mustBeNumber, required} from "../../utils/constants";
 
 
 
@@ -67,7 +68,6 @@ function EditBook() {
                     <>
                         <Form
                             onSubmit={onSubmit}
-                            // debug={console.log}
                             mutators={{ ...arrayMutators}}
                             initialValues={data}
                             render={({handleSubmit, form, submitting, pristine, values}) => (
@@ -83,54 +83,79 @@ function EditBook() {
                                            placeholder='isbn'
                                            name='isbn'
                                            type="text"
-                                           required
+                                           validate={composeValidators(required, mustBeNumber,isbnNumbersCheck)}
                                     >
-                                        {({ input }) => (
+                                        {({ input, meta }) => (
                                             <div>
                                                 <Input {...input} type='text' name='isbn' style={{width: '400px'}} />
+                                                {meta.error && meta.touched && <span>{meta.error}</span>}
                                             </div>
                                         )}
                                     </Field>
-                                    <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray'}}
+                                    <Field
                                            component="input"
                                            placeholder='title'
                                            name='title'
                                            type="text"
-                                           required
-                                    />
-                                    <Field style={{
-                                        width: '400px',
-                                        borderRadius: '5px',
-                                        border: '1px solid gray',
-                                        color: 'black'
-                                    }}
-
+                                           validate={required}
+                                    >
+                                        {({ input, meta }) => (
+                                            <div>
+                                                <Input {...input} type='text' name='title' style={{width: '400px'}} />
+                                                {meta.error && meta.touched && <span>{meta.error}</span>}
+                                            </div>
+                                        )}
+                                    </Field>
+                                    <Field
                                            component="textarea"
-                                           rows={4}
                                            name='description'
                                            type="text"
-                                    />
-                                    <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray'}}
-
+                                    >
+                                        {({ input }) => (
+                                            <div>
+                                                <TextArea {...input} type='text' name='description' style={{width: '400px'}} rows={4}/>
+                                            </div>
+                                        )}
+                                    </Field>
+                                    <Field
                                            component="input"
                                            placeholder='author'
                                            name='author'
                                            type="text"
-                                           required
-                                    />
-                                    <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray'}}
+                                           validate={required}
+                                    >
+                                        {({ input, meta }) => (
+                                            <div>
+                                                <Input {...input} type='text'  name='author' style={{width: '400px'}}/>
+                                                {meta.error && meta.touched && <span>{meta.error}</span>}
+                                            </div>
+                                        )}
+                                    </Field>
+                                    <Field
                                            component="input"
                                            placeholder='publicationDate'
-                                           type="text"
+                                           type="date"
                                            name='publicationDate'
-                                    />
+                                    >
+                                        {({ input }) => (
+                                            <div>
+                                                <Input {...input} type='date' name='publicationDate' style={{width: '400px'}}/>
+                                            </div>
+                                        )}
+                                    </Field>
                                     <p>Reviews</p>
                                     <FieldArray name="reviews">
                                         {({fields}) => (
                                             <div>
                                                 {fields.map((name) => (
                                                     <div key={name}>
-                                                        <Field name={`${name}["@id"]`} component="input" style={{width: '400px', borderRadius: '5px', border: '1px solid gray'}}/>
+                                                        <Field name={`${name}["@id"]`} component="input">
+                                                            {({ input }) => (
+                                                                <div>
+                                                                    <Input {...input} type='text' name='isbn' style={{width: '400px'}} />
+                                                                </div>
+                                                            )}
+                                                        </Field>
                                                     </div>
                                                 ))}
                                             </div>

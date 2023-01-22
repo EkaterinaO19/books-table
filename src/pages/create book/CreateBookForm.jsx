@@ -6,20 +6,12 @@ import {Input} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {DatePicker} from "antd/es";
 import {FieldArray} from "react-final-form-arrays";
+import {composeValidators, isbnNumbersCheck, mustBeNumber, required} from "../../utils/constants";
 
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function CreateBookForm(props) {
-
-    const required = value => (value ? undefined : <p style={{color:'red'}}>Required field</p>);
-    const mustBeNumber = value => (isNaN(value) ? <p style={{color:'red'}}>Must be a number</p> : undefined)
-
-    const isbnRegEx = /(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)/;
-    const isbnNumbersCheck = value => (isNaN(value) || !value.match(isbnRegEx) ?
-        undefined : <p style={{color:'red'}}>Should be isbn 10 or 13 digits</p>)
-    const composeValidators = (...validators) => value =>
-        validators.reduce((error, validator) => error || validator(value), undefined)
 
     const onSubmit = value => {
         props.mutation.mutate(value);
@@ -63,7 +55,7 @@ function CreateBookForm(props) {
                                         </div>
                                     )}
                                 </Field>
-                                <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray'}}
+                                <Field
                                        component="input"
                                        rows={4}
                                        name='description'
@@ -72,7 +64,7 @@ function CreateBookForm(props) {
                                         <div>
                                             <TextArea {...input} type="text" placeholder="description" style={{width: '400px'}}
                                             />
-                                            {meta.error && meta.touched && <span>{meta.error}</span>}
+                                            {/*{meta.error && meta.touched && <span>{meta.error}</span>}*/}
                                         </div>
                                     )}
                                 </Field>
@@ -90,7 +82,7 @@ function CreateBookForm(props) {
                                         </div>
                                     )}
                                 </Field>
-                                <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray', color: 'gray'}}
+                                <Field
                                        component="input"
                                        placeholder='publicationDate'
                                        type="date"
@@ -103,7 +95,7 @@ function CreateBookForm(props) {
                                     )}
                                 </Field>
                                 <p>Reviews</p>
-                                <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray'}}
+                                <Field
                                        component="input"
                                        placeholder='reviews'
                                        type="text"

@@ -19,7 +19,6 @@ function Main() {
     })
 
     if (isLoading) return <LoadingSpinner />
-
     if (error) return <ErrorPage />
 
 
