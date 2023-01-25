@@ -1,16 +1,15 @@
-import React, {useRef, useState} from 'react';
-import {Alert, Button, Input, Layout, message, Popconfirm, Space, Table} from 'antd';
+import React, {useState} from 'react';
+import {Alert, Button, Layout,  Popconfirm, Table} from 'antd';
 import {useQuery} from "@tanstack/react-query";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import ErrorPage from "../../components/UI/ErrorPage";
 import {useColumns} from "../../utils/columnsData";
 import qs from 'qs';
 import {Link} from "react-router-dom";
-import useDelete from "../../hooks/useDelete";
 import useDeleteForId from "../../hooks/useDeleteForId";
 
 
-function TablePage(props) {
+function TablePage() {
     const columns = useColumns();
     const deleteForIdMutation = useDeleteForId('Books');
     const [tableParams, setTableParams] = useState({
@@ -23,6 +22,45 @@ function TablePage(props) {
 
     const [showAlert, setShowAlert] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+    const {isLoading, error, data} = useQuery({
+        queryKey: ['booksData', tableParams],
+        queryFn: () =>
+            fetch(`https://demo.api-platform.com/books?${qs.stringify(tableParams)}`)
+                .then((res) => res.json()),
+    });
+    function handleChange(pagination, sorter, filters) {
+
+        let sortOrder;
+        if (filters.order === "ascend") {
+            sortOrder = 'ASC'
+        } else if (filters.order === "descend") {
+            sortOrder = 'DESC'
+        } else {
+            return null;
+        }
+
+        const titleSearchInput = filters && filters.title ? filters.title.toString() : null;
+            const authorSearchInput = filters && filters.author ? filters.title.toString() : null;
+
+            if (titleSearchInput) {
+                setTableParams(prevState => ({...prevState, title: titleSearchInput}));
+            }
+            if (authorSearchInput) {
+                setTableParams(prevState => ({...prevState, author: authorSearchInput}))
+            }
+
+
+        setTableParams(prevState => ({
+            ...prevState,
+            page: pagination.current,
+            itemsPerPage: pagination.pageSize,
+            order: {
+                [filters.field]: sortOrder
+            },
+        }))
+
+    }
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
@@ -34,49 +72,8 @@ function TablePage(props) {
         onChange: onSelectChange
     };
 
-
-    const {isLoading, error, data} = useQuery({
-        queryKey: ['booksData', tableParams],
-        queryFn: () =>
-            fetch(`https://demo.api-platform.com/books?${qs.stringify(tableParams)}`)
-                .then((res) => res.json()),
-    });
-
-
     const alertMessage = `${selectedRowKeys.length} items selected`;
     const deleteMessage = `${selectedRowKeys.length} element(s) deleted`;
-
-    if (isLoading) return <LoadingSpinner/>
-    if (error) return <ErrorPage/>
-
-    function handleChange(pagination, filters, sorter) {
-        const titleSearchInput = filters && filters.title ? filters.title.toString() : null;
-        const authorSearchInput = filters && filters.author ? filters.title.toString() : null;
-
-        if(titleSearchInput){
-            setTableParams(prevState => ({...prevState, title: titleSearchInput}));
-        } else if(authorSearchInput){
-            setTableParams(prevState => ({...prevState, author: authorSearchInput}))
-        } else { return null; }
-
-        let sortOrder;
-        if (sorter.order === 'ascend') {
-            sortOrder = 'ASC'
-        } else if (sorter.order === 'descend') {
-            sortOrder = 'DESC'
-        } else {
-            return sortOrder;
-        }
-        setTableParams(prevState => ({
-            ...prevState,
-            page: pagination.current,
-            itemsPerPage: pagination.pageSize,
-            order: {
-                [sorter.field]: sortOrder
-            },
-        }))
-    }
-
 
     const showPopconfirm = () => {
         setOpen(true);
@@ -90,11 +87,11 @@ function TablePage(props) {
         setShowAlert(false);
     };
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setOpen(false);
     };
 
-
+    if (isLoading) return <LoadingSpinner/>
+    if (error) return <ErrorPage/>
 
     return (
         <Layout>
@@ -129,7 +126,7 @@ function TablePage(props) {
                 columns={columns}
                 dataSource={data['hydra:member']}
                 rowSelection={rowSelection}
-                rowKey={(data) => data["@id"]}
+                rowKey={data => data["@id"]}
                 onChange={handleChange}
             />
         </Layout>

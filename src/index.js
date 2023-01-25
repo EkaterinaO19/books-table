@@ -9,16 +9,12 @@ import ErrorPage from "./components/UI/ErrorPage";
 import EditBook from "./pages/edit book/EditBook";
 import ShowBook from "./pages/show book/ShowBook";
 import CreateBook from "./pages/create book/CreateBook";
-import { AuthContextProvider} from "./store/auth-context";
 import ReviewList from "./pages/review/ReviewList";
 import ShowReview from "./pages/review/ShowReview";
 import CreateReview from "./pages/review/CreateReview";
 import EditReview from "./pages/review/EditReview";
 import TablePage from "./pages/main/TablePage";
-import 'antd/dist/antd.css';
-
-import { store } from './store/reviewStore';
-import { Provider } from 'react-redux';
+import 'antd/dist/antd.min.css';
 
 
 const router = createBrowserRouter([
@@ -70,11 +66,7 @@ const queryClient = new QueryClient()
 root.render(
   <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-          <Provider store={store}>
               <RouterProvider router={router} />
-          </Provider>
-          </AuthContextProvider>
       </QueryClientProvider>
   </React.StrictMode>
 );

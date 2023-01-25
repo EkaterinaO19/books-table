@@ -6,7 +6,7 @@ export const required = value => (value ? undefined : <p style={{color:'red'}}>R
 export const mustBeNumber = value => (isNaN(value) ? <p style={{color:'red'}}>Must be a number</p> : undefined)
 
 export const isbnRegEx = /(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)/;
-export const isbnNumbersCheck = value => (isNaN(value) || !value.match(isbnRegEx) ?
-    undefined : <p style={{color:'red'}}>Should be isbn 10 or 13 digits</p>)
+export const isbnNumbersCheck = value => (isNaN(value) || !value.match(isbnRegEx)) ?
+    (<p style={{color:'red'}}>Should be isbn 10 or 13 digits</p>) : null;
 export const composeValidators = (...validators) => value =>
     validators.reduce((error, validator) => error || validator(value), undefined)

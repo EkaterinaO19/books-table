@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {LeftOutlined} from "@ant-design/icons";
 import {Button} from "antd";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery, } from "@tanstack/react-query";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import ErrorPage from "../../components/UI/ErrorPage";
 import useDelete from "../../hooks/useDelete";

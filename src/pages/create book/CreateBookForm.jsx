@@ -5,21 +5,26 @@ import { Form, Field } from 'react-final-form'
 import {Input} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {DatePicker} from "antd/es";
-import {FieldArray} from "react-final-form-arrays";
 import {composeValidators, isbnNumbersCheck, mustBeNumber, required} from "../../utils/constants";
 
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-
 function CreateBookForm(props) {
+    const onSubmit = async (values) => {
 
-    const onSubmit = async value => {
-
-
-
-          return  await props.mutation.mutateAsync(value).catch(e=> ({isbn:'error',publicationDate:'error'}));
-
-    }
+        await sleep(300);
+           return await props.mutation.mutateAsync(values)
+               .then((res)=> res.message)
+                // .catch(e=> (
+                    // console.log(e.response.data.violations.map(mes =>
+                    //         {mes.propertyPath: mes.message}
+                    // )))
+              //       {
+              //     isbn: e.response.data['hydra:description'].toString(),
+              //     publicationDate: e.response.data['hydra:description'].toString()
+              // })
+              // ))
+    };
 
 
     return (
@@ -30,17 +35,21 @@ function CreateBookForm(props) {
                         onSubmit={onSubmit}
                         id="createBookForm"
                         // debug={console.log}
-                        render={({ handleSubmit, form, submitting, pristine, values }) => (
+                        render={({
+                                handleSubmit,
+                                submitError,
+                                form, submitting, pristine, values }) => (
                             <form onSubmit={handleSubmit} style={{display: 'flex', alignItems: 'center', justifyContent:'center', flexDirection: 'column', gap: '20px', }}>
                                 <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray',}}
                                        component="input"
                                        placeholder='isbn'
                                        name='isbn'
-                                       validate={composeValidators(required, mustBeNumber,isbnNumbersCheck)}
+                                       validate={composeValidators(required, mustBeNumber,isbnNumbersCheck )}
                                 >
+
                                     {({ input, meta }) => (
                                         <div>
-                                            <Input {...input} type="text" placeholder="isbn" style={{width: '400px'}}
+                                                <Input {...input} type="text" placeholder="isbn" style={{width: '400px'}}
                                             />
                                             {(meta.error || meta.submitError) && meta.touched && (
                                                 <span>{meta.error || meta.submitError}</span>
@@ -58,7 +67,9 @@ function CreateBookForm(props) {
                                         <div>
                                             <Input {...input} type="text" placeholder="title" style={{width: '400px'}}
                                             />
-                                            {meta.error && meta.touched && <span>{meta.error}</span>}
+                                            {(meta.error || meta.submitError) && meta.touched && (
+                                                <span>{meta.error || meta.submitError}</span>
+                                            )}
                                         </div>
                                     )}
                                 </Field>
@@ -69,9 +80,10 @@ function CreateBookForm(props) {
                                 >
                                     {({ input, meta }) => (
                                         <div>
-                                            <TextArea {...input} type="text" placeholder="description" style={{width: '400px'}}
-                                            />
-                                            {/*{meta.error && meta.touched && <span>{meta.error}</span>}*/}
+                                            <TextArea {...input} type="text" placeholder="description" style={{width: '400px'}} />
+                                            {(meta.error || meta.submitError) && meta.touched &&
+                                               <span>{meta.error || meta.submitError}</span>
+                                            }
                                         </div>
                                     )}
                                 </Field>
@@ -85,7 +97,9 @@ function CreateBookForm(props) {
                                         <div>
                                             <Input {...input} type="text" placeholder="author" style={{width: '400px'}}
                                             />
-                                            {meta.error && meta.touched && <span>{meta.error}</span>}
+                                            {(meta.error || meta.submitError) && meta.touched && (
+                                                <span>{meta.error || meta.submitError}</span>
+                                            )}
                                         </div>
                                     )}
                                 </Field>
@@ -111,9 +125,12 @@ function CreateBookForm(props) {
                                        type="text"
                                        name='reviews'
                                 >
-                                    {({ input }) => (
+                                    {({ input,meta }) => (
                                         <div>
                                             <Input {...input} type="text" style={{width: '400px'}}/>
+                                            {(meta.error || meta.submitError) && meta.touched && (
+                                                <span>{meta.error || meta.submitError}</span>
+                                            )}
                                         </div>
                                     )}
                                 </Field>

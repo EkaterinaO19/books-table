@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from "antd";
-import {columns} from "../../utils/columnsData";
+import { columns } from "../../utils/columnsData";
 
 function BooksTable(props) {
     return (

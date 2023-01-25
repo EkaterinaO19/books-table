@@ -1,9 +1,8 @@
 import React from 'react';
-import {Link, useNavigate,} from "react-router-dom";
+import { useNavigate,} from "react-router-dom";
 import axios from "axios";
-import {useMutation} from "@tanstack/react-query";
+import { useMutation} from "@tanstack/react-query";
 import CreateBookForm from "./CreateBookForm";
-import {message} from "antd";
 
 
 const CreateBook = () => {
@@ -16,7 +15,9 @@ const CreateBook = () => {
             alert('Book successfully created!')
             navigate('/');
         },
-        onError: async () => {
+        onError: async (error) => {
+            // console.log(error['@context']['hydra:description'])
+            alert(error.message)
         }
     });
 
@@ -28,7 +29,7 @@ const CreateBook = () => {
                 <>
                      <CreateBookForm mutation={mutation}/>
                      {mutation.isError && (
-                             <div style={{color: 'red', fontWeight:'bold', textAlign:'center', marginTop: '20px'}}>smth went wrong</div>
+                             <div style={{color: 'red', fontWeight:'bold', textAlign:'center', marginTop: '20px'}}>{mutation.error.message}</div>
                          )}
                 </>
             )}

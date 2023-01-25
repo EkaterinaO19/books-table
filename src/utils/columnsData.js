@@ -85,6 +85,17 @@ export const useColumnSearchProps = (dataIndex) => {
                     >
                         Filter
                     </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({
+                                closeDropdown: true,
+                            });
+                        }}
+                    >
+                        close
+                    </Button>
                 </Space>
             </div>
         ),
@@ -95,8 +106,8 @@ export const useColumnSearchProps = (dataIndex) => {
                 }}
             />
         ),
-        // onFilter: (value, record) =>
-        //     record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilter: (value, record) =>
+            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
         onFilterDropdownOpenChange: (visible) => {
             if (visible) {
                 setTimeout(() => searchInput.current?.select(), 100);
@@ -123,14 +134,13 @@ export const useColumnSearchProps = (dataIndex) => {
 export const useColumns = () => {
     const title = useColumnSearchProps('title');
     const author = useColumnSearchProps('author');
-    const columns = [
+     const columns = [
         {
             title: 'id',
             dataIndex: 'id',
             key: 'id',
             sorter: true,
             render: (id) => <Link to={`books/${id}`}>{id}</Link>,
-            // sortDirections: ['asc', 'desc']
         },
         {
             title: 'isbn',
@@ -143,7 +153,7 @@ export const useColumns = () => {
             title: 'title',
             dataIndex: 'title',
             key: 'title',
-            width: "20%",
+            width: "10%",
             sorter: true,
             ...title
         },
@@ -172,7 +182,8 @@ export const useColumns = () => {
             title: 'reviews',
             dataIndex: 'reviews',
             render: (reviews) => <>{reviews.map(review => <Link to={`reviews/${review?.id}`}>{review?.id}</Link>)}</>,
-            key: 'reviews',
+            key: (reviews) => reviews.uuid,
+            width: "40%",
         },
         {
             title: 'Action',
@@ -182,3 +193,6 @@ export const useColumns = () => {
     ]
     return (columns)
 }
+
+// export class columns {
+// }
