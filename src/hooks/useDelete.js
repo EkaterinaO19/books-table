@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 import ErrorPage from "../components/UI/ErrorPage";
 
 const useDelete=(nameOfObject)=>{
-
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     return useMutation(removeObject => {

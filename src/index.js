@@ -6,7 +6,6 @@ import {
 } from '@tanstack/react-query'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./components/UI/ErrorPage";
-import Main from './pages/main/Main';
 import EditBook from "./pages/edit book/EditBook";
 import ShowBook from "./pages/show book/ShowBook";
 import CreateBook from "./pages/create book/CreateBook";
@@ -15,12 +14,14 @@ import ReviewList from "./pages/review/ReviewList";
 import ShowReview from "./pages/review/ShowReview";
 import CreateReview from "./pages/review/CreateReview";
 import EditReview from "./pages/review/EditReview";
+import TablePage from "./pages/main/TablePage";
+import 'antd/dist/antd.css';
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Main/>,
+        element: <TablePage/>,
         errorElement: <ErrorPage />,
     },
     {
