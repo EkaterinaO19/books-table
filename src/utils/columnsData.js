@@ -85,15 +85,6 @@ export const useColumnSearchProps = (dataIndex) => {
                     >
                         Filter
                     </Button>
-                    {/*<Button*/}
-                    {/*    type="link"*/}
-                    {/*    size="small"*/}
-                    {/*    onClick={() => {*/}
-                    {/*        close();*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*    close*/}
-                    {/*</Button>*/}
                 </Space>
             </div>
         ),

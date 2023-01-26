@@ -3,14 +3,14 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ErrorPage from "../components/UI/ErrorPage";
 
-const useDelete=(nameOfObject)=>{
+const useDeleteForId=(nameOfdeletedObject)=>{
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    return useMutation(removeObject => {
-        return axios.delete(`https://demo.api-platform.com${removeObject["@id"]}`)
+    return useMutation(id => {
+        return axios.delete(`https://demo.api-platform.com${id}`)
     }, {
         onSuccess: async () => {
-            console.log(nameOfObject+' successfully deleted!')
+            console.log(nameOfdeletedObject+' successfully deleted!')
             await queryClient.invalidateQueries('booksData', 'reviewsData')
             navigate('/');
         },
@@ -20,4 +20,4 @@ const useDelete=(nameOfObject)=>{
     });
 }
 
-export default useDelete;
+export default useDeleteForId;

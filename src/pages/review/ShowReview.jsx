@@ -34,7 +34,7 @@ function ShowReview(props) {
             <Link to={'/reviews'}><LeftOutlined/>Back</Link>
             <h1>Show Review: {`/reviews/${data?.id}`}</h1>
             <table style={{width: '70%'}}>
-                <tr style={{backgroundColor: 'lightgray'}}>
+           reviewStore     <tr style={{backgroundColor: 'lightgray'}}>
                     <th style={{width: '10%'}}>Field</th>
                     <th>Value</th>
                 </tr>

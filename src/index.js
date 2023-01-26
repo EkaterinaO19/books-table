@@ -17,6 +17,9 @@ import EditReview from "./pages/review/EditReview";
 import TablePage from "./pages/main/TablePage";
 import 'antd/dist/antd.css';
 
+import { store } from './store/reviewStore';
+import { Provider } from 'react-redux';
+
 
 const router = createBrowserRouter([
     {
@@ -68,7 +71,9 @@ root.render(
   <React.StrictMode>
       <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
+          <Provider store={store}>
               <RouterProvider router={router} />
+          </Provider>
           </AuthContextProvider>
       </QueryClientProvider>
   </React.StrictMode>
