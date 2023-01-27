@@ -13,8 +13,12 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function CreateBookForm(props) {
 
-    const onSubmit = value => {
-        props.mutation.mutate(value);
+    const onSubmit = async value => {
+
+
+
+          return  await props.mutation.mutateAsync(value).catch(e=> ({isbn:'error',publicationDate:'error'}));
+
     }
 
 
@@ -25,6 +29,7 @@ function CreateBookForm(props) {
                     <Form
                         onSubmit={onSubmit}
                         id="createBookForm"
+                        // debug={console.log}
                         render={({ handleSubmit, form, submitting, pristine, values }) => (
                             <form onSubmit={handleSubmit} style={{display: 'flex', alignItems: 'center', justifyContent:'center', flexDirection: 'column', gap: '20px', }}>
                                 <Field style={{width: '400px', borderRadius: '5px', border: '1px solid gray',}}
@@ -37,7 +42,9 @@ function CreateBookForm(props) {
                                         <div>
                                             <Input {...input} type="text" placeholder="isbn" style={{width: '400px'}}
                                             />
-                                            {meta.error && meta.touched && <span>{meta.error}</span>}
+                                            {(meta.error || meta.submitError) && meta.touched && (
+                                                <span>{meta.error || meta.submitError}</span>
+                                            )}
                                         </div>
                                     )}
                                 </Field>
@@ -88,9 +95,12 @@ function CreateBookForm(props) {
                                        type="date"
                                        name='publicationDate'
                                 >
-                                    {({ input }) => (
+                                    {({ input,meta }) => (
                                         <div>
                                             <DatePicker {...input} type='date' name='publicationDate' style={{width: '400px'}}/>
+                                            {(meta.error || meta.submitError) && meta.touched && (
+                                                <span>{meta.error || meta.submitError}</span>
+                                            )}
                                         </div>
                                     )}
                                 </Field>
