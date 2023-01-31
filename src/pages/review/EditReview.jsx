@@ -7,6 +7,7 @@ import axios from "axios";
 import ErrorPage from "../../components/UI/ErrorPage";
 import useDelete from "../../hooks/useDelete";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
+import {BASE_URL} from "../../utils/constants";
 
 function EditReview(props) {
 
@@ -14,14 +15,14 @@ function EditReview(props) {
     const navigate = useNavigate();
 
     const { isLoading, error, data } = useQuery(['showReview',reviewId], () =>
-        fetch(`https://demo.api-platform.com/reviews/${reviewId}`).then(res =>
+        fetch(BASE_URL+`/reviews/${reviewId}`).then(res =>
             res.json()
         )
     );
 
 
     const editReview = useMutation(editReview => {
-            return axios.put(`https://demo.api-platform.com/reviews/${reviewId}`, {
+            return axios.put(BASE_URL+`/reviews/${reviewId}`, {
                 headers: {'Content-Type': 'application/json'}
             })
         },

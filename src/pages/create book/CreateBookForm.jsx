@@ -11,7 +11,6 @@ import {composeValidators, isbnNumbersCheck, mustBeNumber, required} from "../..
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 function CreateBookForm(props) {
     const onSubmit = async (values) => {
-
         await sleep(300);
            return await props.mutation.mutateAsync(values)
                .then((res)=> res.message)

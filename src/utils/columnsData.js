@@ -181,7 +181,7 @@ export const useColumns = () => {
         {
             title: 'reviews',
             dataIndex: 'reviews',
-            render: (reviews) => <>{reviews.map(review => <Link to={`reviews/${review?.id}`}>{review?.id}</Link>)}</>,
+            render: (reviews) => <>{reviews.map(review => <Link key={review?.id} to={`reviews/${review?.id}`}>{review?.id}</Link>)}</>,
             key: (reviews) => reviews.uuid,
             width: "40%",
         },

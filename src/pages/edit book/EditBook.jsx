@@ -11,7 +11,7 @@ import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import { Form, Field } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
-import {composeValidators, isbnNumbersCheck, mustBeNumber, required} from "../../utils/constants";
+import {BASE_URL, composeValidators, isbnNumbersCheck, mustBeNumber, required} from "../../utils/constants";
 
 
 
@@ -21,13 +21,13 @@ function EditBook() {
     const remove = useDelete("BooksData");
 
     const {isLoading, isError, data} = useQuery(['booksData', bookId], () =>
-        fetch(`https://demo.api-platform.com/books/${bookId}`).then(res =>
+        fetch(BASE_URL + `/books/${bookId}`).then(res =>
             res.json()),
     );
 
 
     const editBook = useMutation(editBook =>
-            axios.put(`https://demo.api-platform.com/books/${bookId}`, editBook, {
+            axios.put(BASE_URL+`/books/${bookId}`, editBook, {
                 headers: {'Content-Type': 'application/json'}
             })
         ,

@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
-import {Alert, Button, Layout,  Popconfirm, Table} from 'antd';
-import {useQuery} from "@tanstack/react-query";
+import {Alert, Button, Layout, Popconfirm, Table} from 'antd';
+import {QueryClient, useQuery} from "@tanstack/react-query";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import ErrorPage from "../../components/UI/ErrorPage";
 import {useColumns} from "../../utils/columnsData";
 import qs from 'qs';
 import {Link} from "react-router-dom";
 import useDeleteForId from "../../hooks/useDeleteForId";
+import {BASE_URL, tokenFetch} from "../../utils/constants";
 
 
-function TablePage() {
+function TablePage(options) {
     const columns = useColumns();
     const deleteForIdMutation = useDeleteForId('Books');
     const [tableParams, setTableParams] = useState({
@@ -23,21 +24,30 @@ function TablePage() {
     const [showAlert, setShowAlert] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-    const {isLoading, error, data} = useQuery({
-        queryKey: ['booksData', tableParams],
-        queryFn: () =>
-            fetch(`https://demo.api-platform.com/books?${qs.stringify(tableParams)}`)
-                .then((res) => res.json()),
-    });
-    function handleChange(pagination, sorter, filters) {
+    // const {isLoading, error, data} = useQuery({
+    //     queryKey: ['booksData', tableParams],
+    //     queryFn: () =>
+    //         fetch(BASE_URL + `/books?${qs.stringify(tableParams)}`)
+    //             .then((res) => res.json())
+    // });
 
+
+    const {isLoading, error, data}= useQuery({
+        queryKey: ['booksData', tableParams],
+        queryFn: ()=>tokenFetch(`/books?${qs.stringify(tableParams)}`)
+    })
+
+    console.log(data)
+
+
+    function handleChange(pagination, sorter, filters) {
         let sortOrder;
         if (filters.order === "ascend") {
             sortOrder = 'ASC'
         } else if (filters.order === "descend") {
             sortOrder = 'DESC'
         } else {
-            return null;
+            sortOrder = filters.order
         }
 
         const titleSearchInput = filters && filters.title ? filters.title.toString() : null;
@@ -62,7 +72,7 @@ function TablePage() {
 
     }
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
         setShowAlert(true)
     };
@@ -80,7 +90,7 @@ function TablePage() {
     };
     const handleOk = async() => {
         setConfirmLoading(true);
-        await  Promise.all(selectedRowKeys.map(id=>deleteForIdMutation.mutateAsync(id)));
+        await Promise.all(selectedRowKeys.map(id=>deleteForIdMutation.mutateAsync(id)));
         setOpen(false);
         setConfirmLoading(false);
         setSelectedRowKeys([]);
@@ -91,7 +101,7 @@ function TablePage() {
     };
 
     if (isLoading) return <LoadingSpinner/>
-    if (error) return <ErrorPage/>
+    // if (error) return <ErrorPage/>
 
     return (
         <Layout>
@@ -124,7 +134,7 @@ function TablePage() {
                     total: data && data['hydra:totalItems']
                 }}
                 columns={columns}
-                dataSource={data['hydra:member']}
+                dataSource={data?data['hydra:member']:[]}
                 rowSelection={rowSelection}
                 rowKey={data => data["@id"]}
                 onChange={handleChange}

@@ -6,13 +6,14 @@ import {useMutation} from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import {Field, Form} from "react-final-form";
+import {BASE_URL} from "../../utils/constants";
 
 
 function CreateReview(props) {
 
     const navigate = useNavigate();
     const createReview = useMutation(createReview => {
-        return axios.post('https://demo.api-platform.com/reviews', createReview)
+        return axios.post(BASE_URL+'/reviews', createReview)
     }, {
         onSuccess: async () => {
             alert('Review successfully created!')

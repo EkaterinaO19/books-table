@@ -5,6 +5,7 @@ import {useQuery} from "@tanstack/react-query";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import ErrorPage from "../../components/UI/ErrorPage";
 import { v4 as uuidv4 } from 'uuid';
+import {BASE_URL} from "../../utils/constants";
 
 
 function ReviewList(props) {
@@ -12,7 +13,7 @@ function ReviewList(props) {
     const { isLoading, error, data } = useQuery({
         queryKey: ['reviewsData'],
         queryFn: () =>
-            fetch(`https://demo.api-platform.com/reviews`).then(
+            fetch(BASE_URL+`/reviews`).then(
                 (res) => res.json(),
             ),
     })

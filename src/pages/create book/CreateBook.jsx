@@ -3,13 +3,14 @@ import { useNavigate,} from "react-router-dom";
 import axios from "axios";
 import { useMutation} from "@tanstack/react-query";
 import CreateBookForm from "./CreateBookForm";
+import {BASE_URL} from "../../utils/constants";
 
 
 const CreateBook = () => {
 
     const navigate = useNavigate();
     const mutation = useMutation(createBook => {
-        return axios.post('https://demo.api-platform.com/books', createBook)
+        return axios.post(BASE_URL+'/books', createBook)
     }, {
         onSuccess: async () => {
             alert('Book successfully created!')

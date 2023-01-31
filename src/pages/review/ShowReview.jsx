@@ -6,6 +6,7 @@ import {useQuery, } from "@tanstack/react-query";
 import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import ErrorPage from "../../components/UI/ErrorPage";
 import useDelete from "../../hooks/useDelete";
+import {BASE_URL} from "../../utils/constants";
 
 function ShowReview(props) {
 
@@ -14,7 +15,7 @@ function ShowReview(props) {
     // const queryClient = useQueryClient();
 
     const { isLoading, error, data } = useQuery(['showReview',reviewId], () =>
-        fetch(`https://demo.api-platform.com/reviews/${reviewId}`).then(res =>
+        fetch(BASE_URL+`/reviews/${reviewId}`).then(res =>
             res.json()
         )
     );

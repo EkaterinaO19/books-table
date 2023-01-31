@@ -6,6 +6,7 @@ import LoadingSpinner from "../../components/UI/LoadingSpinner";
 import ErrorPage from "../../components/UI/ErrorPage";
 import {LeftOutlined} from "@ant-design/icons";
 import {Button} from "antd";
+import {BASE_URL} from "../../utils/constants";
 
 function ShowBook() {
     let  { bookId }  = useParams();
@@ -13,13 +14,13 @@ function ShowBook() {
     const queryClient = useQueryClient();
 
     const { isLoading, error, data } = useQuery(['showBook',bookId], () =>
-        fetch(`https://demo.api-platform.com/books/${bookId}`).then(res =>
+        fetch(BASE_URL+`/books/${bookId}`).then(res =>
             res.json()
         )
     );
 
     const remove = useMutation(removeBook => {
-        return axios.delete(`https://demo.api-platform.com/books/${bookId}`)
+        return axios.delete(BASE_URL+`/books/${bookId}`)
     }, {
         onSuccess: async () => {
             await alert('Book successfully deleted!')
