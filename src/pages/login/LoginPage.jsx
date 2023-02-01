@@ -4,12 +4,37 @@ import { Form, Field } from 'react-final-form'
 import {Input, Layout} from "antd";
 import {redirect, useNavigate} from "react-router-dom";
 
+
+
 function LoginPage(props) {
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-    const navigate = useNavigate();
 
-    const onLogIn = async (values, event) => {
-        event.preventDefault();
+    // const onLogIn = async (values) => {
+    //     await sleep(300);
+    //
+    //     fetch(BASE_URL + `/authentication_token`,
+    //         {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer`
+    //             },
+    //             body: JSON.stringify({
+    //                 email: values.email,
+    //                 password: values.password
+    //             }),
+    //             redirect: 'manual'
+    //         })
+    //         .then(response => response.json())
+    //         .then((response) => localStorage.setItem('token',response.token))
+    //
+    //
+    //         // .then((response)=>userPageNavigationHandler(response))
+    //         .catch((err) => console.error(err));
+    // }
+
+    const navigate = useNavigate();
+    const onLogIn = async (values) => {
         await sleep(300);
 
         fetch(BASE_URL + `/authentication_token`,
@@ -22,17 +47,23 @@ function LoginPage(props) {
                 body: JSON.stringify({
                     email: values.email,
                     password: values.password
-                })
+                }),
             })
             .then(response => response.json())
-            .then((response) => localStorage.setItem('token',response.token))
-            .catch((err) => console.error(err));
+            .then((response)=>  localStorage.setItem('token',response.token))
+            .then(() =>
+                setTimeout(() => {
+                    navigate('/');
+                }, 500))
+            .catch((err) => {
+            console.error(err)
+            alert("Unable to login. Please try after some time.");
+        })
     }
 
 
     return (
         <Layout style={{height:'100vh', display:'flex',flexWrap: 'wrap', alignContent: 'center', justifyContent: 'center'}}>
-
             <Form
                 onSubmit={onLogIn}
                 initialValues={{ email: 'admin@example.com', password: 'admin' }}

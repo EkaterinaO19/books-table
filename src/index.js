@@ -18,15 +18,16 @@ import 'antd/dist/antd.min.css';
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <TablePage/>,
-        // errorElement: <ErrorPage />,
-    },
-    {
         path: "/login",
         element: <LoginPage/>,
         // errorElement: <ErrorPage />,
     },
+    {
+        path: "/",
+        element: <TablePage/>,
+        // errorElement: <ErrorPage />,
+    },
+
     // {
     //     path: "/create",
     //     element: <CreateBook/>,
