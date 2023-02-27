@@ -12,22 +12,6 @@ export const composeValidators = (...validators) => value =>
 
 export const BASE_URL = `https://demo.api-platform.com`;
 
-// function fetchWrapper (...props) {
-//     return useQuery(BASE_URL+ props,  {
-//         headers: {Authentication: 'Bearer {token}'}
-//     })
-//         .then((res) => res.json())
-// }
-// tokenFetch("/books/",)
-// export const tokenFetch = async(id,init) => {
-//     const {data} = await fetch(BASE_URL + id, {
-//         method : init.method??"GET",
-//         headers: {
-//             Authorization:  `Bearer` + localStorage.getItem('token')
-//         }
-//     });
-//     return data.json();
-// };
 export const tokenFetch =  (id, init) => {
     return fetch(BASE_URL + id, {
         method: init ?? "GET",

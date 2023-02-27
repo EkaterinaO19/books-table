@@ -8,6 +8,7 @@ import qs from 'qs';
 import {Link} from "react-router-dom";
 import useDeleteForId from "../../hooks/useDeleteForId";
 import {BASE_URL, tokenFetch} from "../../utils/constants";
+import {CheckCircleTwoTone} from "@ant-design/icons";
 
 
 function TablePage(options) {
@@ -24,19 +25,10 @@ function TablePage(options) {
     const [showAlert, setShowAlert] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-    // const {isLoading, error, data} = useQuery({
-    //     queryKey: ['booksData', tableParams],
-    //     queryFn: () =>
-    //         fetch(BASE_URL + `/books?${qs.stringify(tableParams)}`)
-    //             .then((res) => res.json())
-    // });
-
-
     const {isLoading, error, data}= useQuery({
         queryKey: ['booksData', tableParams],
         queryFn: ()=>tokenFetch(`/books?${qs.stringify(tableParams)}`)
     })
-
     console.log(data)
 
 
@@ -105,6 +97,9 @@ function TablePage(options) {
 
     return (
         <Layout>
+            <div style={{display:'flex', justifyContent: 'flex-end',}}>
+                <Button type="danger" style={{display:'flex',width:'fit-content', margin:'1em'}}><Link to={'/login'}>Logout</Link></Button>
+            </div>
             <h1 style={{display:'flex', justifyContent: 'center', fontSize:'30px', margin:'10px'}}>Book List</h1>
             <Button type="primary" style={{display:'flex',width:'fit-content'}}><Link to={'/create'}>Create Book</Link></Button>
 
